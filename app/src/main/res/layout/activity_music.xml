@@ -9,7 +9,11 @@
     android:background="@drawable/ee"
     >
 
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,23 +25,27 @@
         android:background="#aed5e8"
         />
 
-    <!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:orientation="horizontal">
-
-        <ListView
-            android:id="@+id/listView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/btn_test"
-            android:layout_marginTop="20dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="默认"
+            android:textSize="25dp"
+            android:layout_weight="5"
+            android:id="@+id/gequ"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bofang"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="顺序播放"
+            android:layout_weight="0.5"
+            android:background="#aed5e8"
             />
 
     </LinearLayout>
-    -->
 
     <ImageView
         android:layout_width="wrap_content"

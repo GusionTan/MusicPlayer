@@ -47,6 +47,10 @@ public class MusicActivity extends Activity {
     private ArrayList<String> list;
     private File[] songFiles;
     private Button choosebtn;
+    private int Bofang = 1;
+    private Button bofang;
+    private String ta;
+
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -79,7 +83,8 @@ public class MusicActivity extends Activity {
         currentTV = findViewById(R.id.music_current_time);
         seekBar = (SeekBar) findViewById(R.id.music_seekbar);
         seekBar.setOnSeekBarChangeListener(new MySeekBar());
-
+        final TextView gequ = (TextView) findViewById(R.id.gequ);
+        //图片旋转设置
         ImageView imageView = (ImageView) findViewById(R.id.draw_1);
         //动画
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.img_animation);
@@ -87,8 +92,25 @@ public class MusicActivity extends Activity {
         animation.setInterpolator(lin);
         imageView.startAnimation(animation);
 
+        //播放顺序设置
+        bofang = (Button) findViewById(R.id.bofang);
+        bofang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Bofang == 1){
+                    bofang.setText("循环播放");
+                    Bofang =2;
+                }else if(Bofang ==2){
+                    Bofang =3;
+                    bofang.setText("随机播放");
+                }else{
+                    Bofang =1;
+                    bofang.setText("顺序播放");
+                }
+            }
+        });
 
-
+        //选择本地歌曲按钮设置
         choosebtn = (Button) findViewById(R.id.nav_button);
         choosebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +134,7 @@ public class MusicActivity extends Activity {
             StrictMode.setVmPolicy(builder.build());
         }
 
-
+        //扫描SD卡
         list = new ArrayList<String>();   //音乐列表
         File sdpath = Environment.getExternalStorageDirectory(); //获得手机SD卡路径
         File path = new File(sdpath+ "//Music//");      //获得SD卡的mp3文件夹
@@ -124,12 +146,13 @@ public class MusicActivity extends Activity {
             list.add(str1);//获取文件的绝对路径
         }
 
-
+        //接受选择歌曲与传值
         Intent intent = getIntent();
         song_path = intent.getStringExtra("spath");
         String tr1 = intent.getStringExtra("cposition");
         currentposition = Integer.parseInt(tr1);
         changeMusic(currentposition);
+        gequ.setText(song_path.substring(song_path.indexOf("谭")+1,song_path.indexOf(".mp3")));
         try {
             mp.reset();    //重置
             mp.setDataSource(song_path);
@@ -177,6 +200,7 @@ public class MusicActivity extends Activity {
             @Override
             public void onClick(View v) {
                 changeMusic(--currentposition);
+                gequ.setText(ta);
             }
         });
         final ImageButton next = (ImageButton) findViewById(R.id.next);
@@ -184,11 +208,13 @@ public class MusicActivity extends Activity {
             @Override
             public void onClick(View v) {
                 changeMusic(++currentposition);
+                gequ.setText(ta);
             }
         });
 
     }
 
+    //切换歌曲
     private void changeMusic(int position) {
         if (position < 0) {
             currentposition = position = list.size() - 1;
@@ -213,7 +239,7 @@ public class MusicActivity extends Activity {
         seekBar.setProgress(0);//将进度条初始化
         seekBar.setMax(mp.getDuration());//设置进度条最大值为歌曲总时间
         totalTV.setText(formatTime(mp.getDuration()));//显示歌曲总时长
-
+        ta =song_path.substring(song_path.indexOf("谭")+1,song_path.indexOf(".mp3"));
         updateProgress();//更新进度条
     }
 
@@ -224,6 +250,15 @@ public class MusicActivity extends Activity {
         int progress = mp.getCurrentPosition();
         msg.arg1 = progress;
         mHandler.sendMessageDelayed(msg, INTERNAL_TIME);
+        if(progress >= mp.getDuration() ){
+            if(Bofang ==1) {
+                changeMusic(++currentposition);
+            }else if(Bofang ==2){
+                changeMusic(currentposition);
+            }else{
+                changeMusic(--currentposition);
+            }
+        }
     }
 
     public class MySeekBar implements SeekBar.OnSeekBarChangeListener {
