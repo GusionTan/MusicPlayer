@@ -34,7 +34,7 @@ import java.util.TimerTask;
 public class MusicActivity extends Activity {
 
 
-    private static final int INTERNAL_TIME = 1000;
+    private static final int INTERNAL_TIME = 500;
     final MediaPlayer mp = new MediaPlayer();
     String song_path = "";
     private SeekBar seekBar;
