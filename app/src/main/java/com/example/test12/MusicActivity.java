@@ -34,7 +34,6 @@ import java.util.TimerTask;
 public class MusicActivity extends Activity {
 
 
-    private static final int INTERNAL_TIME = 500;
     final MediaPlayer mp = new MediaPlayer();
     String song_path = "";
     private SeekBar seekBar;
@@ -243,6 +242,7 @@ public class MusicActivity extends Activity {
         updateProgress();//更新进度条
     }
 
+    private static final int INTERNAL_TIME = 500;
     private void updateProgress() {
         // 使用Handler每间隔1s发送一次空消息，通知进度条更新
         Message msg = Message.obtain();// 获取一个现成的消息
